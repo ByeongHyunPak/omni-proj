@@ -18,7 +18,8 @@ class erpDownsample():
         HWx = (round(H/s), round(W/s))
 
         # get hr gridy projected to lr
-        gridy2x = utils.make_coord(HWy)
+        gridy = utils.make_coord(HWy)
+        gridy2x = gridy.clone()
 
         # get valid region on lr corresponding to hr
         gridx = utils.make_coord(HWx, flatten=False)
@@ -48,6 +49,7 @@ class erpDownsample():
         # sample query points
         sample_lst = np.random.choice(
             torch.nonzero(masky)[:, 0], self.sample_q, replace=False)
+        gridy = gridy[sample_lst, :]
 
         gt = hr_erp_img.view(3, -1)[:, sample_lst].permute(1, 0)
 
