@@ -26,7 +26,7 @@ class erpDownsample():
 
         # randomly crop on valid region of lr
         x0, y0 = utils.crop_pos(maskx, self.inp_size)
-        x1, y1 = x0 + self.inp_size, y1 + self.inp_size
+        x1, y1 = x0 + self.inp_size, y0 + self.inp_size
         gridx2z = gridx[y0:y1, x0:x1, :]
         inp = F.grid_sample(hr_erp_img.unsqueeze(0),
             gridx2z.unsqueeze(0).flip(-1), mode='bicubic', 
