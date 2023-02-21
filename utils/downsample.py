@@ -141,6 +141,7 @@ class erpDownsample():
         gridy = utils.make_coord(HWy)
         gridy2x, masky = utils.gridy2x_erp2per(
             gridy, HWy, HWx, THE, PHI, FOVy, FOVx)
+        print(torch.sum(masky))
 
         # get valid region on lr corresponding to hr
         gridx = utils.make_coord(HWx, flatten=False)
@@ -168,6 +169,7 @@ class erpDownsample():
         
         cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
         masky = masky * cropy[:, 0] * cropy[:, 1]
+        print(torch.sum(masky))
 
         # sample query points
         sample_lst = np.random.choice(
