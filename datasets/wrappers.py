@@ -1,16 +1,9 @@
-import functools
 import random
-import math
-from PIL import Image
-
-import numpy as np
 import torch
-import torch.nn.functional as F
 
 from torch.utils.data import Dataset
-from torchvision import transforms
-
 from datasets import register
+
 import utils
 
 @register('erp-downsample')
