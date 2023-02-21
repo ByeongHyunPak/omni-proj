@@ -6,10 +6,10 @@ train_dataset:
       repeat: 20
       cache: in_memory
   wrapper:
-    name: wrapper
-    args: {scale_min: 4, scale_max: 6, inp_size: 48, 
-           sample_q: 1152, crop_pos_fn: 'square'}
-  batch_size: 4
+    name: erp-downsample
+    args: {scale_min: 4, scale_max: 6, 
+           inp_size: 48, sample_q: 2304}
+  batch_size: 8
 
 valid_dataset:
   dataset:
@@ -19,10 +19,10 @@ valid_dataset:
       repeat: 20
       cache: in_memory
   wrapper:
-    name: wrapper
-    args: {scale_min: 4, scale_max: 6, inp_size: 48, 
-           sample_q: 1152, crop_pos_fn: 'square'}
-  batch_size: 4
+    name: erp-downsample
+    args: {scale_min: 4, scale_max: 6, 
+           inp_size: 48, sample_q: 2304}
+  batch_size: 8
 
 data_norm: {sub: [0.5], div: [0.5]}
 
@@ -49,4 +49,4 @@ epoch_max: 1000
 epoch_save: 100
 epoch_valid: 1
 
-resume: ./save/train-square-swinir-ltew/epoch_last.pth
+resume: ./save/erp-downsample-swinir-ltew/epoch_last.pth
