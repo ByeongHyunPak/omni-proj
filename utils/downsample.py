@@ -43,7 +43,7 @@ class erpDownsample():
         gridy2x[:, 0] = (gridy2x[:, 0] - yd) / dy # Normalize to [-1, 1]
         gridy2x[:, 1] = (gridy2x[:, 1] - xd) / dx # Normalize to [-1, 1]
 
-        cropy = torch.where(torch.abs(gridy2x) > 1., 0., 1.)
+        cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
         masky = cropy[:, 0] * cropy[:, 1]
 
         # sample query points
@@ -102,7 +102,7 @@ class erpDownsample():
         gridy2x[:, 0] = (gridy2x[:, 0] - yd) / dy # Normalize to [-1, 1]
         gridy2x[:, 1] = (gridy2x[:, 1] - xd) / dx # Normalize to [-1, 1]
 
-        cropy = torch.where(torch.abs(gridy2x) > 1., 0., 1.)
+        cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
         masky = masky * cropy[:, 0] * cropy[:, 1]
 
         # sample query points
@@ -166,7 +166,7 @@ class erpDownsample():
         gridy2x[:, 0] = (gridy2x[:, 0] - yd) / dy # Normalize to [-1, 1]
         gridy2x[:, 1] = (gridy2x[:, 1] - xd) / dx # Normalize to [-1, 1]
         
-        cropy = torch.where(torch.abs(gridy2x) > 1., 0., 1.)
+        cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
         masky = masky * cropy[:, 0] * cropy[:, 1]
 
         # sample query points
