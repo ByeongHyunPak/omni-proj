@@ -1,0 +1,52 @@
+train_dataset:
+  dataset:
+    name: erp-folder
+    args:
+      root_path: /data/w9bkje/odisr-fr/erp/train
+      repeat: 20
+      cache: in_memory
+  wrapper:
+    name: wrapper
+    args: {scale_min: 4, scale_max: 6, inp_size: 48, 
+           sample_q: 1152, crop_pos_fn: 'square'}
+  batch_size: 4
+
+valid_dataset:
+  dataset:
+    name: erp-folder
+    args:
+      root_path: /data/w9bkje/odisr-fr/erp/valid
+      repeat: 20
+      cache: in_memory
+  wrapper:
+    name: wrapper
+    args: {scale_min: 4, scale_max: 6, inp_size: 48, 
+           sample_q: 1152, crop_pos_fn: 'square'}
+  batch_size: 4
+
+data_norm: {sub: [0.5], div: [0.5]}
+
+model:
+  name: lte_warp
+  args:
+    encoder_spec:
+      name: rdn
+      args: {no_upsampling: true}
+    imnet_spec:
+      name: mlp
+      args: {out_dim: 3, hidden_list: [256, 256, 256]}
+    hidden_dim: 256
+
+optimizer:
+  name: adam
+  args: {lr: 1.e-4}
+
+multi_step_lr: 
+  milestones: [200, 400, 600, 800]
+  gamma: 0.5
+
+epoch_max: 1000
+epoch_save: 100
+epoch_valid: 1
+
+resume: ./save/train-square-rdn-ltew/epoch_last.pth
