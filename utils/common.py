@@ -1,20 +1,18 @@
 import os
-import cv2
 import time
-import math
 import shutil
 import random
 
 import torch
 import numpy as np
 
-from torchvision import transforms
 from PIL import Image
+from torchvision import transforms
 
 from torch.optim import SGD, Adam
 from tensorboardX import SummaryWriter
 
-def square_crop_pos(mask, crop_size):
+def crop_pos(mask, crop_size):
   mask = mask.squeeze(0)
   y, x = torch.nonzero(mask, as_tuple=True)
   idx = random.randint(0, len(x) - 1)
@@ -23,12 +21,13 @@ def square_crop_pos(mask, crop_size):
   y1, x1 = y0 + crop_size, x0 + crop_size
 
   if y1 >= mask.shape[-2] or x1 >= mask.shape[-1]:
-    return square_crop_pos(mask, crop_size)
+    return crop_pos(mask, crop_size)
 
   crop_list = [(x0, y0), (x1, y0), (x0, y1), (x1, y1)]
   for x_, y_ in crop_list:
     if mask[y_, x_] == 0:
-      return square_crop_pos(mask, crop_size)
+      return crop_pos(mask, crop_size)
+      
   return x0, y0
 
 def to_pixel_samples(img):
