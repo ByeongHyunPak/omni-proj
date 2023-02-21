@@ -1,4 +1,5 @@
 # Custom gitignore
+.vscode
 save/
 *.ipynb
 
