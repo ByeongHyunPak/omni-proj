@@ -77,15 +77,15 @@ def train(train_loader, model, optimizer, epoch):
     for k, v in batch.items():
       batch[k] = v.cuda()
     
-    inp = (batch['inp'] - sub) / div
-    gt = (batch['gt'] - sub) / div
+    inp  = (batch['inp'] - sub) / div
+    gt   = (batch['gt'] - sub) / div
     grid = batch['grid']
     cell = batch['cell']
     
-    inp = inp.view(inp.shape[0] * inp.shape[1], *inp.shape[2:])
+    inp  = inp.view(inp.shape[0] * inp.shape[1], *inp.shape[2:])
     grid = grid.view(grid.shape[0] * grid.shape[1], *grid.shape[2:])
     cell = cell.view(cell.shape[0] * cell.shape[1], *cell.shape[2:])
-    gt = gt.view(gt.shape[0] * gt.shape[1], *gt.shape[2:])
+    gt   = gt.view(gt.shape[0] * gt.shape[1], *gt.shape[2:])
 
     hr = model(inp, grid, cell)
     loss = loss_fn(hr, gt)
@@ -122,15 +122,15 @@ def valid(valid_loader, model, epoch):
     for k, v in batch.items():
       batch[k] = v.cuda()
   
-    inp = (batch['inp'] - sub) / div
-    gt = batch['gt']
+    inp  = (batch['inp'] - sub) / div
+    gt   = batch['gt']
     grid = batch['grid']
     cell = batch['cell']
     
-    inp = inp.view(inp.shape[0] * inp.shape[1], *inp.shape[2:])
+    inp  = inp.view(inp.shape[0] * inp.shape[1], *inp.shape[2:])
     grid = grid.view(grid.shape[0] * grid.shape[1], *grid.shape[2:])
     cell = cell.view(cell.shape[0] * cell.shape[1], *cell.shape[2:])
-    gt = gt.view(gt.shape[0] * gt.shape[1], *gt.shape[2:])
+    gt   = gt.view(gt.shape[0] * gt.shape[1], *gt.shape[2:])
 
     hr = model(inp, grid, cell)
     hr = (hr * div + sub).clamp_(0, 1)

@@ -88,14 +88,11 @@ def gridy2x_erp2fis(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx):
     H, W, h, w = *HWy, *HWx
     hFOVy, wFOVy = FOVy * float(H) / W, FOVy
     hFOVx, wFOVx = FOVx * float(h) / w, FOVx
-
-    # masky
-    dist = torch.norm(gridy, p=2, dim=-1)
-    mask = torch.where(dist > 1, 0, 1)
     
     # gridy2x
     ### onto sphere
     gridy = gridy.reshape(-1, 2).float()
+    dist = torch.norm(gridy, p=2, dim=-1)
     gridy[:, 0] *= np.radians(hFOVy / 2.0)
     gridy[:, 1] *= np.radians(wFOVy / 2.0)
     gridy = gridy.double().flip(-1)
@@ -118,6 +115,9 @@ def gridy2x_erp2fis(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx):
     lat = torch.arcsin(gridy[:, 2].clamp_(-1+1e-6, 1-1e-6)) / np.pi * 2
     lon = torch.atan2(gridy[:, 1], gridy[:, 0]) / np.pi
     gridx = torch.stack((lat, lon), dim=-1)
+
+    # masky
+    mask = torch.where(dist > 1, 0, 1)
 
     return gridx.float(), mask.float()
 
@@ -159,6 +159,7 @@ def gridy2x_per2fis(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx):
     # masky
     mask = torch.where(torch.abs(gridx) > 1, 0, 1)
     mask = mask[:, 0] * mask[:, 1]
+    mask *= torch.where(gridy[:, 0] < 0, 0, 1)
     mask *= torch.where(dist > 1, 0, 1)
 
     return gridx.float(), mask.float()
@@ -234,7 +235,6 @@ def gridy2x_fis2per(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx):
     # masky
     dist = torch.norm(gridx, p=2, dim=-1)
     mask = torch.where(dist > 1, 0, 1)
-    mask *= torch.where(gridy[:, 0] < 0, 0, 1)
 
     return gridx.float(), mask.float()
 

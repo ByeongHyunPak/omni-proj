@@ -4,6 +4,8 @@ import torch
 import torch.nn.functional as F
 import utils
 
+from torchvision import transforms
+
 FOV = {'erp': 360, 'fis': 180, 'per': 90}
 
 class erpDownsample():
@@ -67,8 +69,11 @@ class erpDownsample():
         HWy = (H, H)
         HWx = (round(H/s), round(W/s))
         
-        THE = random.uniform(-180, 180)
-        PHI = random.uniform(-90, 90)
+        # THE = random.uniform(-180, 180)
+        # PHI = random.uniform(-90, 90)
+
+        THE = random.uniform(-90, 90)
+        PHI = 0
 
         FOVy = FOV['fis']
         FOVx = FOV['erp']
@@ -102,7 +107,7 @@ class erpDownsample():
         gridy2x[:, 0] = (gridy2x[:, 0] - yd) / dy # Normalize to [-1, 1]
         gridy2x[:, 1] = (gridy2x[:, 1] - xd) / dx # Normalize to [-1, 1]
 
-        cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
+        cropy = torch.where(torch.abs(gridy2x) > 1, 0., 1.)
         masky = masky * cropy[:, 0] * cropy[:, 1]
 
         # sample query points
@@ -131,17 +136,19 @@ class erpDownsample():
         HWy = (H//2, H//2)
         HWx = (round(H/s), round(W/s))
         
-        THE = random.uniform(-180, 180)
-        PHI = random.uniform(-90, 90)
+        # THE = random.uniform(-180, 180)
+        # PHI = random.uniform(-90, 90)
 
-        FOVy = FOV['fis']
+        THE = random.uniform(-135, 135)
+        PHI = random.uniform(-45, 45)
+
+        FOVy = FOV['per']
         FOVx = FOV['erp']
 
         # get hr gridy projected to lr
         gridy = utils.make_coord(HWy)
         gridy2x, masky = utils.gridy2x_erp2per(
             gridy, HWy, HWx, THE, PHI, FOVy, FOVx)
-        print(torch.sum(masky))
 
         # get valid region on lr corresponding to hr
         gridx = utils.make_coord(HWx, flatten=False)
@@ -167,9 +174,8 @@ class erpDownsample():
         gridy2x[:, 0] = (gridy2x[:, 0] - yd) / dy # Normalize to [-1, 1]
         gridy2x[:, 1] = (gridy2x[:, 1] - xd) / dx # Normalize to [-1, 1]
         
-        cropy = torch.where(torch.abs(gridy2x) > 1, 0, 1)
+        cropy = torch.where(torch.abs(gridy2x) > 1, 0., 1.)
         masky = masky * cropy[:, 0] * cropy[:, 1]
-        print(torch.sum(masky))
 
         # sample query points
         sample_lst = np.random.choice(

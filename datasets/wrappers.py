@@ -9,11 +9,12 @@ import utils
 @register('erp-downsample')
 class erpDownsampleWrapper(Dataset):
     def __init__(self, dataset, scale_min=2, scale_max=4, 
-                 inp_size=48, sample_q=2304):
+                 inp_size=48, sample_q=2304, ys=['erp', 'fis', 'per']):
         self.dataset = dataset
         self.scale_min = scale_min
         self.scale_max = scale_max
         self.downsample = utils.erpDownsample(inp_size, sample_q)
+        self.ys = ys
     
     def __len__(self):
         return len(self.dataset)
@@ -22,22 +23,24 @@ class erpDownsampleWrapper(Dataset):
         # HR ERP image
         hr_erp_img = self.dataset[idx]
 
-        # downscale ratio
-        s1 = random.uniform(self.scale_min, self.scale_max) # erp2erp
-        s2 = random.uniform(self.scale_min, self.scale_max) # erp2fis
-        s3 = random.uniform(self.scale_min, self.scale_max) # erp2per
-
         # prepare data pairs
-        erp2erp = self.downsample.erp2erp(hr_erp_img, s1)
-        erp2fis = self.downsample.erp2fis(hr_erp_img, s2)
-        erp2per = self.downsample.erp2per(hr_erp_img, s3)
+        downsample_fn = {
+            'erp2erp': self.downsample.erp2erp,
+            'erp2fis': self.downsample.erp2fis,
+            'erp2per': self.downsample.erp2per,
+        }; inps, grids, cells, gts = [], [], [], []
+        for y in self.ys:
+            data = downsample_fn[f'erp2{y}'](hr_erp_img,
+                random.uniform(self.scale_min, self.scale_max))
+            inps.append(data['inp'])
+            grids.append(data['grid'])
+            cells.append(data['cell'])
+            gts.append(data['gt'])
 
-        inps  = torch.stack([erp2erp['inp'], erp2fis['inp'], erp2per['inp']])
-        grids = torch.stack([erp2erp['grid'], erp2fis['grid'], erp2per['grid']])
-        cells = torch.stack([erp2erp['cell'], erp2fis['cell'], erp2per['cell']])
-        gts   = torch.stack([erp2erp['gt'], erp2fis['gt'], erp2per['gt']])
-        
-        return {'inp': inps, 'grid': grids, 'cell': cells, 'gt': gts}
+        return {'inp' : torch.stack(inps), 
+                'grid': torch.stack(grids), 
+                'cell': torch.stack(cells), 
+                'gt'  : torch.stack(gts)}
 
 @register('fisheye-downsample')
 class fisheyeDownsampleWrapper(Dataset):
