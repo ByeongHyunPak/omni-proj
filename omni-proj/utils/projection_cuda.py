@@ -3,15 +3,24 @@ import numpy as np
 
 def rodrigues_torch(rvec):
     theta = torch.norm(rvec)
-    if theta < 1e-6:
-        return torch.eye(3, device=rvec.device)
-
-    rvec = rvec / theta
-    K = torch.tensor([[0, -rvec[2], rvec[1]],
-                      [rvec[2], 0, -rvec[0]],
-                      [-rvec[1], rvec[0], 0]], device=rvec.device)
-    R = torch.eye(3, device=rvec.device) + torch.sin(theta) * K + (1 - torch.cos(theta)) * torch.matmul(K, K)
-    return R
+    if theta < torch.finfo(torch.float32).eps:  # 매우 작은 각도에 대한 처리
+        rotation_mat = torch.eye(3, device=rvec.device)
+    else:
+        r = rvec / theta  # 회전 벡터 정규화
+        I = torch.eye(3, device=rvec.device)
+        
+        # r_rT 계산
+        r_rT = torch.outer(r, r)  # r * r^T
+        
+        # r_cross 계산
+        r_cross = torch.tensor([[0, -r[2], r[1]],
+                                [r[2], 0, -r[0]],
+                                [-r[1], r[0], 0]], device=rvec.device)
+        
+        # 최종 회전 행렬 계산
+        rotation_mat = torch.cos(theta) * I + (1 - torch.cos(theta)) * r_rT + torch.sin(theta) * r_cross
+    
+    return rotation_mat
 
 # gridy2x
 def gridy2x_fis2erp(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx, device='cuda'):
@@ -31,8 +40,8 @@ def gridy2x_fis2erp(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx, device='cuda'):
     gridy = torch.stack((x0, y0, z0), dim=-1).double()
 
     ### rotation
-    y_axis = torch.tensor([0.0, 1.0, 0.0], device=device, dtype=torch.float64)
-    z_axis = torch.tensor([0.0, 0.0, 1.0], device=device, dtype=torch.float64)
+    y_axis = torch.tensor([0.0, 1.0, 0.0], device=device, dtype=torch.double)
+    z_axis = torch.tensor([0.0, 0.0, 1.0], device=device, dtype=torch.double)
     R1 = rodrigues_torch(z_axis * np.radians(THETA))
     R2 = rodrigues_torch(torch.matmul(R1, y_axis) * np.radians(PHI))
 
