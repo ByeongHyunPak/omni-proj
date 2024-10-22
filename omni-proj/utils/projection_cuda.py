@@ -187,7 +187,7 @@ def gridy2x_erp2per(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx, device='cuda'):
     gridy[:, 1] *= np.tan(np.radians(wFOVy / 2.0))
     gridy = gridy.double().flip(-1)
     
-    x0 = torch.ones(gridy.shape[0], 1)
+    x0 = torch.ones(gridy.shape[0], 1, device=device)
     gridy = torch.cat((x0, gridy), dim=-1)
     gridy /= torch.norm(gridy, p=2, dim=-1, keepdim=True)
     
@@ -223,7 +223,7 @@ def gridy2x_fis2per(gridy, HWy, HWx, THETA, PHI, FOVy, FOVx, device='cuda'):
     gridy[:, 1] *= np.tan(np.radians(wFOVy / 2.0))
     gridy = gridy.double().flip(-1)
     
-    x0 = torch.ones(gridy.shape[0], 1)
+    x0 = torch.ones(gridy.shape[0], 1, device=device)
     gridy = torch.cat((x0, gridy), dim=-1)
     gridy /= torch.norm(gridy, p=2, dim=-1, keepdim=True)
     
