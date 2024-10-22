@@ -1,4 +1,4 @@
 from .common import *
 from .downsample import *
-from .projection import *
-from .projection_cuda import *
+# from .projection_cpu import *
+from .projection_gpu import *
