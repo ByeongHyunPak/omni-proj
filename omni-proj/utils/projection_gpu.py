@@ -4,7 +4,7 @@ import numpy as np
 def rodrigues_torch(rvec):
     theta = torch.norm(rvec)
     if theta < torch.finfo(torch.float32).eps:
-        rotation_mat = torch.eye(3, device=rvec.device)
+        rotation_mat = torch.eye(3, device=rvec.device, dtype=rvec.dtype)
     else:
         r = rvec / theta 
         I = torch.eye(3, device=rvec.device)

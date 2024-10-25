@@ -16,7 +16,6 @@ def seed_everything(seed):
     # torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.benchmark = True
 
-
 def get_views(panorama_height, panorama_width, window_size=64, stride=8):
     panorama_height /= 8
     panorama_width /= 8
@@ -31,7 +30,6 @@ def get_views(panorama_height, panorama_width, window_size=64, stride=8):
         w_end = w_start + window_size
         views.append((h_start, h_end, w_start, w_end))
     return views
-
 
 class MultiDiffusion(nn.Module):
     def __init__(self, device, sd_version='2.0', hf_key=None):
@@ -91,7 +89,7 @@ class MultiDiffusion(nn.Module):
 
     @torch.no_grad()
     def text2panorama(self, prompts, negative_prompts='', height=512, width=2048, num_inference_steps=50,
-                      guidance_scale=7.5):
+                      guidance_scale=7.5, visualize_intermidiates=False):
 
         if isinstance(prompts, str):
             prompts = [prompts]
@@ -111,6 +109,8 @@ class MultiDiffusion(nn.Module):
         self.scheduler.set_timesteps(num_inference_steps)
 
         with torch.autocast('cuda'):
+            if visualize_intermidiates is True:
+                intermidiate_imgs = []
             for i, t in enumerate(tqdm(self.scheduler.timesteps)):
                 count.zero_()
                 value.zero_()
@@ -137,32 +137,18 @@ class MultiDiffusion(nn.Module):
                 # take the MultiDiffusion step
                 latent = torch.where(count > 0, value / count, value)
 
+                # visualize intermidiate timesteps
+                if visualize_intermidiates is True:
+                    imgs = self.decode_latents(latent)  # [1, 3, 512, 512]
+                    img = T.ToPILImage()(imgs[0].cpu())
+                    intermidiate_imgs.append((i, img))
+
         # Img latents -> imgs
         imgs = self.decode_latents(latent)  # [1, 3, 512, 512]
         img = T.ToPILImage()(imgs[0].cpu())
-        return img
 
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--prompt', type=str, default='a photo of the dolomites')
-    parser.add_argument('--negative', type=str, default='')
-    parser.add_argument('--sd_version', type=str, default='2.0', choices=['1.5', '2.0'],
-                        help="stable diffusion version")
-    parser.add_argument('--H', type=int, default=512)
-    parser.add_argument('--W', type=int, default=4096)
-    parser.add_argument('--seed', type=int, default=0)
-    parser.add_argument('--steps', type=int, default=50)
-    parser.add_argument('--outfile', type=str, default='out.png')
-    opt = parser.parse_args()
-
-    seed_everything(opt.seed)
-
-    device = torch.device('cuda')
-
-    sd = MultiDiffusion(device, opt.sd_version)
-
-    img = sd.text2panorama(opt.prompt, opt.negative, opt.H, opt.W, opt.steps)
-
-    # save image
-    img.save(opt.outfile)
+        if visualize_intermidiates is True:
+            intermidiate_imgs.append((len(intermidiate_imgs), img))
+            return intermidiate_imgs
+        else:
+            return [img]
