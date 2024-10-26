@@ -1,1 +1,1 @@
-from multidiffusion import MultiDiffusion, seed_everything
+from .multidiffusion import MultiDiffusion, seed_everything
