@@ -109,8 +109,10 @@ class MultiDiffusion(nn.Module):
         self.scheduler.set_timesteps(num_inference_steps)
 
         with torch.autocast('cuda'):
+
             if visualize_intermidiates is True:
                 intermidiate_imgs = []
+                
             for i, t in enumerate(tqdm(self.scheduler.timesteps)):
                 count.zero_()
                 value.zero_()
