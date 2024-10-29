@@ -1,6 +1,7 @@
 # Custom gitignore
 .vscode
 save/
+save.txt
 
 
 # Byte-compiled / optimized / DLL files
