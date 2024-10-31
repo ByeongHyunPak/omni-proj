@@ -2,6 +2,7 @@
 Omnidirectional image projection
 
 ## A. Goal
+
 - High-Resolution 360-degree Panorama Image Generation
 
 ## B. Main Idea
@@ -35,8 +36,6 @@ Omnidirectional image projection
  
 - ERP-MultiDiffusion (v2): ERP-MultiDiffusion w/o ERP &lrarr; Pers. projection
 
-    - ERP-MultiDiffusion (v2): ERP-MultiDiffusion w/o ERP &lrarr; Pers. projection
-
     - MultiDiffusion의 regular gird sliding window denoising은 그대로 유지
      
     - `prompt=f"360-degree panoramic image, {prompt}"`
@@ -68,9 +67,58 @@ Omnidirectional image projection
 </details>
 
 ## References
-
 [1] O. Bar-Tal et al. "MultiDiffusion: Fusing Diffusion Paths for Controlled Image Generation", ICML 2023 ([arXiv](https://arxiv.org/pdf/2302.08113))
-
 [2] Y. Chen et al. "Image Neural Field Diffusion Models", CVPR 2024 ([arXiv](https://arxiv.org/pdf/2406.07480))
-
 [3] Y. Yoon et al. "SphereSR: 360-degree Image Super-Resolution with Arbitrary Projection via Continuous Spherical Image Representation", CVPR 2022 ([arXiv](https://arxiv.org/pdf/2112.06536))
+
+## Related Works
+
+<details>
+<summary> Text &rarr; 360º Panorama Image </summary>
+
+- [x] A. Liu et al. "PanoFree: Tuning-Free Holistic Multi-view Image Generation with Cross-view Self-Guidance", ECCV 2024 ([arXiv](https://arxiv.org/pdf/2408.02157))
+
+- [x] A. Voynov et al. "Curved Diffusion: A Generative Model With Optical Geometry Control", ECCV 2024 ([arXiv](https://arxiv.org/pdf/2311.17609))
+
+- [x]  T. Wu et al. "SphereDiffusion: Spherical Geometry-Aware Distortion Resilient Diffusion Model", AAAI 2024 ([arXiv](https://arxiv.org/pdf/2403.10044))
+
+- [x] H. Wang et al. "Customizing 360-Degree Panoramas through Text-to-Image Diffusion Models", WACV 2024 ([arXiv](https://arxiv.org/pdf/2310.18840))
+
+- [x] C. Zhang et al. "Taming Stable Diffusion for Text to 360º Panorama Image Generation", CVPR 2024 Highlight ([arXiv](https://arxiv.org/pdf/2404.07949))
+
+- [ ] J. Li & M. Bansal "PANOGEN: Text-Conditioned Panoramic Environment Generation for Vision-and-Language Navigation", NeurIPS 2023 ([arXiv](https://arxiv.org/pdf/2305.19195))
+
+- [ ] Q. Zhang et al. "DiffCollage: Parallel Generation of Large Content with Diffusion Models", CVPR 2023 ([arXiv](https://arxiv.org/pdf/2303.17076))
+
+- [X] Z. Chen et al. "Text2Light: Zero-Shot Text-Driven HDR Panorama Generation", TOG 2022 ([arXiv](https://arxiv.org/pdf/2209.09898))
+
+</details>
+
+
+<details>
+<summary> Text &rarr; 360º Panorama Video </summary>
+
+- [x] Q. Wang et al. "360DVD: Controllable Panorama Video Generation with 360-Degree Video Diffusion Model", CVPR 2024 ([arXiv](https://arxiv.org/pdf/2401.06578))
+
+</details>
+
+
+<details>
+<summary> nFOV Image &rarr; 360º Panorama Image </summary>
+
+- [x] A. Nakata & T. Yamanaka "2S-ODIS: Two-Stage Omni-Directional Image Synthesis by Geometric Distortion Correction", ECCV 2024 ([arXiv](https://www.arxiv.org/pdf/2409.09969))
+
+- [ ] J. Wang et al. "360-Degree Panorama Generation from Few Unregistered NFoV Images", ACM MM 2023 ([arXiv](https://arxiv.org/pdf/2308.14686))
+
+- [ ] T. Hara et al. "Spherical Image Generation from a Single Normal Field of View Image by Considering Scene Symmetry", AAAI 2021 ([arXiv](https://arxiv.org/pdf/2001.02993))
+
+</details>
+
+
+
+<details>
+<summary> Panorama-to-Panorama Translation </summary>
+
+- [ ] H. Wang et al. "360PanT: Training-Free Text-Driven 360-Degree Panorama-to-Panorama Translation", WACV 2025 ([arXiv](https://arxiv.org/pdf/2409.08397))
+
+</details>
