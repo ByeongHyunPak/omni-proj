@@ -35,6 +35,14 @@ Omnidirectional image projection
  
 - ERP-MultiDiffusion (v2): ERP-MultiDiffusion w/o ERP &lrarr; Pers. projection
 
+    - ERP-MultiDiffusion (v2): ERP-MultiDiffusion w/o ERP &lrarr; Pers. projection
+
+    - MultiDiffusion의 regular gird sliding window denoising은 그대로 유지
+     
+    - `prompt=f"360-degree panoramic image, {prompt}"`
+   
+    - `circular_padding` : left/rightmost의 continuity를 위해서
+
     - (TBD)
 
 </details>
