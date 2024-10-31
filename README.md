@@ -60,6 +60,9 @@ Omnidirectional image projection
 </details>
 
 ## References
+
 [1] O. Bar-Tal et al. "MultiDiffusion: Fusing Diffusion Paths for Controlled Image Generation", ICML 2023 ([arXiv](https://arxiv.org/pdf/2302.08113))
+
 [2] Y. Chen et al. "Image Neural Field Diffusion Models", CVPR 2024 ([arXiv](https://arxiv.org/pdf/2406.07480))
+
 [3] Y. Yoon et al. "SphereSR: 360-degree Image Super-Resolution with Arbitrary Projection via Continuous Spherical Image Representation", CVPR 2022 ([arXiv](https://arxiv.org/pdf/2112.06536))
