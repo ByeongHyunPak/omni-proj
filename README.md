@@ -26,7 +26,7 @@ Omnidirectional image projection
 </details>
 
 <details>
-<summary> 2. ERP-MultiDiffusion (v2) + Sphere-INFD (24.10.30 ~ ) - [Sec. C2] &rarr; Progressing... </summary>
+<summary> 2. ERP-MultiDiffusion (v2) + Sphere-INFD (24.10.30 ~ 11.06) - [Sec. C2] </summary>
 
 - ERP-MultiDiffusion (v1): denoising step 마다 perspective patch &rarr; proj. & fuse on ERP plane &rarr; perspective patch
 
@@ -42,7 +42,7 @@ Omnidirectional image projection
    
     - `circular_padding` : left/rightmost의 continuity를 위해서
 
-    - (TBD)
+    - `latent_rotation` : left/rightmost의 continuity를 위해서
 
 </details>
 
@@ -62,13 +62,20 @@ Omnidirectional image projection
 </details>
 
 <details>
-<summary>2. ERP-MultiDiffusion (v2) zero-shot results (24.10.30 ~ ) - [Sec. B2] &rarr; Progressing... </summary>
+<summary>2. ERP-MultiDiffusion (v2) zero-shot results (24.10.30 ~ 11.06) - [Sec. B2] </summary>
+
+- “360-degree panoramic image, Japanese anime style downtown city street”
+![Image](https://github.com/user-attachments/assets/b3433fd1-2be5-4612-b202-71cdda3905b7)
+
+- More Details and Results: [link](https://drive.google.com/file/d/1bnoP7uTJ7QHypI-ck6F84O5wqAxr1Ns2/view?usp=sharing)
 
 </details>
 
 ## References
 [1] O. Bar-Tal et al. "MultiDiffusion: Fusing Diffusion Paths for Controlled Image Generation", ICML 2023 ([arXiv](https://arxiv.org/pdf/2302.08113))
+
 [2] Y. Chen et al. "Image Neural Field Diffusion Models", CVPR 2024 ([arXiv](https://arxiv.org/pdf/2406.07480))
+
 [3] Y. Yoon et al. "SphereSR: 360-degree Image Super-Resolution with Arbitrary Projection via Continuous Spherical Image Representation", CVPR 2022 ([arXiv](https://arxiv.org/pdf/2112.06536))
 
 ## Related Works
@@ -122,3 +129,4 @@ Omnidirectional image projection
 - [ ] H. Wang et al. "360PanT: Training-Free Text-Driven 360-Degree Panorama-to-Panorama Translation", WACV 2025 ([arXiv](https://arxiv.org/pdf/2409.08397))
 
 </details>
+
